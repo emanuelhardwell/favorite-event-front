@@ -10,8 +10,11 @@ import {
 import { startChecking } from "../actions/auth";
 import { LoginScreen } from "../components/auth/LoginScreen";
 import { CalendarScreen } from "../components/calendar/CalendarScreen";
+import { Event } from "../components/event/Event";
 import { PrivateRoute } from "./PrivateRoute";
 import { PublicRoute } from "./PublicRoute";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const AppRouter = () => {
   const dispatch = useDispatch();
@@ -39,13 +42,14 @@ export const AppRouter = () => {
             <PrivateRoute
               exact
               path="/"
-              component={CalendarScreen}
+              component={Event}
               isAuthenticated={!!uid}
             />
             <Redirect to="/" />
           </Switch>
         </div>
       </Router>
+      <ToastContainer></ToastContainer>
     </div>
   );
 };
