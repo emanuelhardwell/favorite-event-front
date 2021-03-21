@@ -9,12 +9,12 @@ import {
 } from "react-router-dom";
 import { startChecking } from "../actions/auth";
 import { LoginScreen } from "../components/auth/LoginScreen";
-import { CalendarScreen } from "../components/calendar/CalendarScreen";
 import { Event } from "../components/event/Event";
 import { PrivateRoute } from "./PrivateRoute";
 import { PublicRoute } from "./PublicRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Tarea } from "../components/tarea/Tarea";
 
 export const AppRouter = () => {
   const dispatch = useDispatch();
@@ -43,6 +43,12 @@ export const AppRouter = () => {
               exact
               path="/"
               component={Event}
+              isAuthenticated={!!uid}
+            />
+            <PrivateRoute
+              exact
+              path="/tarea"
+              component={Tarea}
               isAuthenticated={!!uid}
             />
             <Redirect to="/" />
