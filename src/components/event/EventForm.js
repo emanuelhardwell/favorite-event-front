@@ -38,7 +38,7 @@ export const EventForm = (props) => {
 
   useEffect(() => {
     if (props.currentId === "") {
-        console.log("id no selected");
+      console.log("id no selected");
       setEvents({ ...initialState });
     } else {
       console.log("id selected");
@@ -56,6 +56,10 @@ export const EventForm = (props) => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setEvents({ ...events, [name]: value });
+  };
+
+  const cancelar = (e) => {
+    props.cancelarID();
   };
 
   return (
@@ -120,6 +124,9 @@ export const EventForm = (props) => {
               <span> {props.currentId === "" ? "Create" : "Update"}</span>
             </button>
           </form>
+          <button className="btn btn-danger mt-2 btn-block" onClick={cancelar}>
+            Cancelar
+          </button>
         </div>
       </div>
     </>

@@ -15,6 +15,7 @@ import { PublicRoute } from "./PublicRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Tarea } from "../components/tarea/Tarea";
+import { Trabajador } from "../components/trabajadores/Trabajador";
 
 export const AppRouter = () => {
   const dispatch = useDispatch();
@@ -49,6 +50,11 @@ export const AppRouter = () => {
               exact
               path="/tarea"
               component={Tarea}
+              isAuthenticated={!!uid}
+            />
+            <PrivateRoute
+              path="/evento/:id"
+              component={Trabajador}
               isAuthenticated={!!uid}
             />
             <Redirect to="/" />

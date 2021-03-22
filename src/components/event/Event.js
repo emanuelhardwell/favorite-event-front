@@ -7,6 +7,7 @@ import { fetchConToken } from "../../helpers/fetch";
 import { covertDates } from "../../helpers/convertDates";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 export const Event = () => {
   /*  */
@@ -90,13 +91,19 @@ export const Event = () => {
     getEvents();
   }, []);
 
+  const cancelarID = () => {
+    setCurrentId("");
+  };
+
+  const trabajadores = () => {};
+
   return (
     <div>
       <Navbar />
       <div className="container">
         <div className="row">
           <div className="col-md-4">
-            <EventForm {...{ addOrEditDate, currentId }} />
+            <EventForm {...{ addOrEditDate, currentId, cancelarID }} />
           </div>
           {/* tabla de eventos --- */}
           <div className="col-md-8">
@@ -108,6 +115,7 @@ export const Event = () => {
                   <th>Nota</th>
                   <th>Fecha inicial</th>
                   <th>Fecha final</th>
+                  <th>Trabajadores</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -118,6 +126,9 @@ export const Event = () => {
                     <td>{event.notes}</td>
                     <td>{format(event.start)}</td>
                     <td>{format(event.end)}</td>
+                    <td>
+                      <a href={`evento/${event._id}`}> Trabajadores </a>
+                    </td>
                     <td>
                       <button
                         className="btn btn-success mr-1"
