@@ -1,4 +1,5 @@
 import moment from "moment";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { fetchConToken } from "../../helpers/fetch";
 import { Navbar } from "../ui/Navbar";
@@ -25,6 +26,9 @@ export const Trabajador = (props) => {
 
   const cadena = props.location.pathname;
   const cadenaPro = cadena.slice(8);
+  console.log(cadenaPro);
+
+  /* *************************** get evento especifico *************************** */
   const getEvent = async () => {
     const res = await fetchConToken(`event/${cadenaPro}`, {}, "GET");
     const body = await res.json();
@@ -87,11 +91,23 @@ export const Trabajador = (props) => {
 
   /* *************************** get trabajadores *************************** */
   const getTrabajo = async () => {
-    const res = await fetchConToken("job", {}, "GET");
-    const body = await res.json();
+    /* const res = await fetchConToken("job", cadenaPro, "GET");
+    const body = await res.json(); */
 
-    if (body.ok) {
-      setJobs(body.jobs);
+    const token = localStorage.getItem("token") || "";
+    const res = await axios.get("http://localhost:4000/api/job", {
+      params: {
+        id: cadenaPro,
+      },
+      headers: {
+        "x-token": token,
+        idEventito: cadenaPro,
+      },
+    });
+
+    console.log(res.statusText);
+    if ((res.statusText = "si")) {
+      setJobs(res.data.jobs);
     } else {
       console.log("No se pudo traer los trabajos");
     }
