@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchConToken } from "../../helpers/fetch";
 import "./style.css";
+import axios from "axios";
 
 export const TrabajadorForm = (props) => {
   /*  */
@@ -9,10 +10,12 @@ export const TrabajadorForm = (props) => {
     type_job: "",
     weeks: "",
     honorary: "",
+    users: [],
+    userSelected: "",
   };
 
   const [job, setJob] = useState(initialState);
-  const { name, type_job, weeks, honorary } = job;
+  const { name, type_job, weeks, honorary, users, userSelected } = job;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -21,7 +24,9 @@ export const TrabajadorForm = (props) => {
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
-    props.addOrEditTrabajo(job);
+    /*  let funcionGetUserTrbajadores = getUserTrabajadores; */
+    props.addOrEditTrabajo(job, userSelected);
+    getUserTrabajadores(); /* se llam la funcion */
     setJob({ ...initialState });
   };
 
@@ -38,7 +43,30 @@ export const TrabajadorForm = (props) => {
     }
   };
 
+  /* *************************** get USER trabajadores  *************************** */
+  const getUserTrabajadores = async () => {
+    const token = localStorage.getItem("token") || "";
+    const res = await axios.get("http://localhost:4000/api/trabajador", {
+      headers: {
+        "x-token": token,
+      },
+    });
+    console.log(res.data.trabajo);
+    /* console.log(data[0].username); */
+    if (res.data.trabajo.length > 0) {
+      console.log("Hay datos");
+      setJob({
+        ...job,
+        users: res.data.trabajo,
+        userSelected: res.data.trabajo[0]._id,
+      });
+    } else {
+      console.log(" NO Hay datos");
+    }
+  };
+
   useEffect(() => {
+    getUserTrabajadores();
     if (props.currentId === "") {
       console.log("id NO seleccionado");
       setJob({ ...initialState });
@@ -69,6 +97,21 @@ export const TrabajadorForm = (props) => {
                 value={name}
                 onChange={handleInputChange}
               />
+            </div>
+            {/* se agrego este select automatico */}
+            <div className="form-group mb-2">
+              <select
+                name="userSelected"
+                className="form-control"
+                value={userSelected}
+                onChange={handleInputChange}
+              >
+                {users.map((user) => (
+                  <option key={user._id} value={user._id}>
+                    {user.nombre}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="form-group">
               <select

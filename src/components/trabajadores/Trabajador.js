@@ -47,11 +47,12 @@ export const Trabajador = (props) => {
   };
 
   /* *************************** add or edit trabajo *************************** */
-  const addOrEditTrabajo = async (job) => {
+  const addOrEditTrabajo = async (job, userSelected) => {
     if (currentId === "") {
       const jobMax = {
         ...job,
         event: _id,
+        trabajador: userSelected,
       };
 
       const res = await fetchConToken("job", jobMax, "POST");
@@ -104,7 +105,7 @@ export const Trabajador = (props) => {
         idEventito: cadenaPro,
       },
     });
-
+    console.log(res.data);
     console.log(res.statusText);
     if ((res.statusText = "si")) {
       setJobs(res.data.jobs);
